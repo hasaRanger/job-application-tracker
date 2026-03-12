@@ -9,7 +9,7 @@ export default function SignOutBtn() {
 
     return (
         <DropdownMenuItem onClick={async () => {
-            const result = await signOut();
+            const result = await signOut()
             if (result.data) {
                 router.push("/sign-in");
             } else {
