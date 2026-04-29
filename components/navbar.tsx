@@ -10,6 +10,7 @@ import { useSession } from "@/lib/auth/auth-client";
 
 export default function Navbar() {
     const session = useSession();
+    const user = session.data?.user;
     return (
         <nav className="border-b border-gray-200 bg-white">
             <div className="container mx-auto flex h-16 items-center px-4 justify-between">
@@ -20,7 +21,7 @@ export default function Navbar() {
                     Job Tracker
                 </Link>
                 <div className="flex items-center gap-4">
-                    {session?.data?.user ? (
+                    {user ? (
                         <>
                             <Link href='/dashboard'>
                                 <Button 
@@ -37,7 +38,7 @@ export default function Navbar() {
                                     >
                                         <Avatar className="h-8 w-8">
                                             <AvatarFallback className="bg-primary text-white">
-                                                {session.data.user.name?.[0].toUpperCase()}
+                                                {user.name?.[0].toUpperCase()}
                                             </AvatarFallback>
                                         </Avatar>
                                     </Button>
@@ -47,10 +48,10 @@ export default function Navbar() {
                                     <DropdownMenuLabel className="font-normal">
                                         <div className="flex flex-col space-y-1">
                                             <p className="text-sm font-medium leading-none">
-                                                {session.data.user.name}
+                                                {user.name}
                                                 </p>
                                             <p className="text-xs lading-none text-muted-foreground">
-                                                {session.data.user.email}
+                                                {user.email}
                                             </p>
                                         </div>
                                     </DropdownMenuLabel>

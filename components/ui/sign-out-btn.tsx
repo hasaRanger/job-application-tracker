@@ -6,16 +6,17 @@ import { useRouter } from "next/navigation";
 
 export default function SignOutBtn() {
     const router = useRouter();
-
     return (
-        <DropdownMenuItem onClick={async () => {
+        <DropdownMenuItem 
+            onClick={async () => {
             const result = await signOut()
             if (result.data) {
-                router.push("/sign-in");
+            router.push("/sign-in");
             } else {
-                alert("Error signing out");
+                alert("Failed to sign out. Please try again.");
             }
-        }}>
+            }}
+        >
             Log Out
         </DropdownMenuItem>
     );

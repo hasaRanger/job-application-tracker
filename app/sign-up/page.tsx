@@ -27,12 +27,12 @@ export default function SignUp() {
 
         try {
             const result = await signUp.email({
-                name, 
+                name,
                 email,
                 password
             });
 
-            if(result.error) {
+            if (result.error) {
                 setError(result.error.message ?? "Failed to sign up");
             } else {
                 router.push("/dashboard");
@@ -54,7 +54,7 @@ export default function SignUp() {
                 </CardDescription>
             </CardHeader>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4" autoComplete="on">
                 <CardContent className="space-y-4">
                     {error && (
                         <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
@@ -65,7 +65,10 @@ export default function SignUp() {
                         <Label htmlFor="name">Name</Label>
                         <Input
                             id="name"
+                            name="name"
                             type="text"
+                            autoComplete="name"
+                            value={name}
                             placeholder="John Doe"
                             onChange={(e) => setName(e.target.value)}
                             required
@@ -75,7 +78,10 @@ export default function SignUp() {
                         <Label htmlFor="email">Email</Label>
                         <Input
                             id="email"
+                            name="email"
                             type="email"
+                            autoComplete="email"
+                            value={email}
                             placeholder="john@example.com"
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -85,7 +91,10 @@ export default function SignUp() {
                         <Label htmlFor="password">Password</Label>
                         <Input
                             id="password"
+                            name="password"
                             type="password"
+                            autoComplete="new-password"
+                            value={password}
                             placeholder="Create a password"
                             onChange={(e) => setPassword(e.target.value)}
                             required

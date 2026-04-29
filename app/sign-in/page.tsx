@@ -29,7 +29,7 @@ export default function SignIn() {
                 password
             });
 
-            if(result.error) {
+            if (result.error) {
                 setError(result.error.message ?? "Failed to sign in");
             } else {
                 router.push("/dashboard");
@@ -50,8 +50,8 @@ export default function SignIn() {
                     Enter your credentials to access your account.
                 </CardDescription>
             </CardHeader>
-        
-            <form className="space-y-4" onSubmit={handleSubmit}>
+
+            <form className="space-y-4" onSubmit={handleSubmit} autoComplete="on">
                 <CardContent className="space-y-4">
                     {error && (
                         <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
@@ -60,29 +60,33 @@ export default function SignIn() {
                     )}
                     <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input 
-                            id="email" 
-                            type="email" 
+                        <Input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autoComplete="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="john@example.com" 
-                            required 
-                            className="border-gray-300 focus:border-primary focus:ring-primary"/>
+                            placeholder="john@example.com"
+                            required
+                            className="border-gray-300 focus:border-primary focus:ring-primary" />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="password">Password</Label>
-                        <Input 
-                            id="password" 
-                            type="password" 
-                            required 
+                        <Input
+                            id="password"
+                            name="password"
+                            type="password"
+                            autoComplete="current-password"
+                            required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            minLength={8} 
-                            className="border-gray-300 focus:border-primary focus:ring-primary"/>
+                            minLength={8}
+                            className="border-gray-300 focus:border-primary focus:ring-primary" />
                     </div>
                 </CardContent>
                 <CardFooter className="flex flex-col space-y-4">
-                    <Button 
+                    <Button
                         type="submit"
                         className="w-full bg-primary hover:bg-primary/90"
                         disabled={loading}
@@ -91,7 +95,7 @@ export default function SignIn() {
                     </Button>
                     <p className="text-center text-sm text-gray-600">
                         Don&apos;t have an account?{" "}
-                        <Link 
+                        <Link
                             href="/sign-up"
                             className="font-medium text-primary hover:underline">
                             Sign Up
