@@ -8,6 +8,13 @@ export async function proxy(request: NextRequest) {
     if(isDashboardPage && !session?.user) {
         return NextResponse.rewrite(new URL("/sign-in", request.url));
     }
+
+    const isSignInPage = request.nextUrl.pathname.startsWith("/sign-in");
+    const isSignUpPage = request.nextUrl.pathname.startsWith("/sign-up");
+    
+    if((isSignInPage || isSignUpPage) && session?.user) {
+        return NextResponse.rewrite(new URL("/dashboard", request.url));
+    }
     // return NextResponse.rewrite(new URL('/sign-in', request.url));
     return NextResponse.next();
 }
