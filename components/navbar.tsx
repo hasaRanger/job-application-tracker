@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import SignOutBtn from "./ui/sign-out-btn";
+import SignOutBtn from "./sign-out-btn";
 import { useSession } from "@/lib/auth/auth-client";
 
 export default function Navbar() {
@@ -15,24 +15,24 @@ export default function Navbar() {
         <nav className="border-b border-gray-200 bg-white">
             <div className="container mx-auto flex h-16 items-center px-4 justify-between">
                 <Link
-                href="/"
-                className="flex items-center gap-2 text-xl font-semibold text-primary">
-                    <Briefcase/>
+                    href="/"
+                    className="flex items-center gap-2 text-xl font-semibold text-primary">
+                    <Briefcase />
                     Job Tracker
                 </Link>
                 <div className="flex items-center gap-4">
                     {user ? (
                         <>
                             <Link href='/dashboard'>
-                                <Button 
-                                    variant="ghost" 
+                                <Button
+                                    variant="ghost"
                                     className="text-gray-700 hover:text-black">
-                                        Dashboard
-                                    </Button>
+                                    Dashboard
+                                </Button>
                             </Link>
                             <DropdownMenu>
-                                <DropdownMenuTrigger>
-                                    <Button 
+                                <DropdownMenuTrigger asChild>
+                                    <Button
                                         variant="ghost"
                                         className="relative h-8 w-8 rounded-full"
                                     >
@@ -49,7 +49,7 @@ export default function Navbar() {
                                         <div className="flex flex-col space-y-1">
                                             <p className="text-sm font-medium leading-none">
                                                 {user.name}
-                                                </p>
+                                            </p>
                                             <p className="text-xs lading-none text-muted-foreground">
                                                 {user.email}
                                             </p>

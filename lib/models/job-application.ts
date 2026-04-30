@@ -11,12 +11,12 @@ export interface IJobApplication extends Document {
     order: number;
     notes?: string;
     salary?: string;
-    jobURL?: string;
+    jobUrl?: string;
     appliedDate?: Date;
     tags?: string[];
     description?: string;
     createdat: Date;
-    updatedat: Date; 
+    updatedat: Date;
 }
 
 const JobApplicationSchema = new Schema<IJobApplication>(
@@ -65,7 +65,7 @@ const JobApplicationSchema = new Schema<IJobApplication>(
         salary: {
             type: String
         },
-        jobURL: {
+        jobUrl: {
             type: String
         },
         appliedDate: {
@@ -73,9 +73,9 @@ const JobApplicationSchema = new Schema<IJobApplication>(
         },
         tags: [
             {
-                type: String    
+                type: String
             }
-        ], 
+        ],
         description: {
             type: String
         }
@@ -85,4 +85,5 @@ const JobApplicationSchema = new Schema<IJobApplication>(
     }
 );
 
-export default mongoose.models.JobApplication || mongoose.model<IJobApplication>("JobApplication", JobApplicationSchema);
+export default (mongoose.models.JobApplication as mongoose.Model<IJobApplication>) ?? 
+    mongoose.model<IJobApplication>("JobApplication", JobApplicationSchema);
