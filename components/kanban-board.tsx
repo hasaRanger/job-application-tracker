@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use-client"
+"use client"
 
 import { Board, Column, JobApplication } from "@/lib/models/models.types";
 import { Award, Calendar, CheckCircle2, Mic, MoreVertical, Trash2, XCircle } from "lucide-react";
@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "./ui/button";
 import CreateJobApplicationDialog from "./create-job-dialog";
 import JobApplicationCard from "./job-application-card";
+import { useBoard } from "@/lib/hooks/useBoards";
 
 interface KanbanBoardProps {
     board: Board;
@@ -102,12 +103,12 @@ function SortableJobCard({
 }
 
 export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
-    const columns = board.columns ?? [];
+    const { columns, moveJob } = useBoard(board);
 
     console.log("KanbanBoard - Board:", board);
     console.log("KanbanBoard - Columns:", columns);
     console.log("KanbanBoard - Column count:", columns.length);
-    
+
     if (columns.length > 0) {
         console.log("First column:", columns[0]);
         console.log("First column jobApplications:", (columns[0] as any)?.jobApplications);
