@@ -3,35 +3,36 @@ import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { initUserBoard } from "../init-user-board";
-import { MongoClient } from "mongodb";
+import connectDB from "../db";
 
-const client = new MongoClient(process.env.MONGODB_URI!);
+const mongooseInstance = await connectDB();
+const client = mongooseInstance.connection.getClient();
 const db = client.db();
 
 export const auth = betterAuth({
-    database: mongodbAdapter(db, {
-        client,
-    }),
-    session: {
-        cookieCache: {
-            enabled: true,
-            maxAge: 60 * 60,
+  database: mongodbAdapter(db, {
+    client,
+  }),
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60,
+    },
+  },
+  emailAndPassword: {
+    enabled: true,
+  },
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          if (user.id) {
+            await initUserBoard(user.id);
+          }
         },
+      },
     },
-    emailAndPassword: {
-        enabled: true,
-    },
-    databaseHooks: {
-        user: {
-            create: {
-                after: async (user) => {
-                    if (user.id) {
-                        await initUserBoard(user.id);
-                    }
-                }
-            },
-        },
-    },
+  },
 });
 
 export async function getSession() {

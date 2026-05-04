@@ -1,19 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Board, Column, JobApplication } from "../models/models.types";
 import { updateJobApplication } from "../actions/job-applications";
 
 export function useBoard(initialBoard?: Board | null) {
-    const [board, setBoard] = useState<Board | null>(initialBoard || null);
-    const [columns, setColumns] = useState<Column[]>(initialBoard?.columns || []);
-
-    useEffect(() => {
-        if (initialBoard) {
-            setBoard(initialBoard);
-            setColumns(initialBoard.columns || []);
-        }
-    }, [initialBoard]);
+    const [board] = useState<Board | null>(() => initialBoard || null);
+    const [columns, setColumns] = useState<Column[]>(() => initialBoard?.columns || []);
 
     async function moveJob(
         jobApplicationId: string,
