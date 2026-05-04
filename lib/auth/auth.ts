@@ -13,6 +13,10 @@ export const auth = betterAuth({
   database: mongodbAdapter(db, {
     client,
   }),
+  trustedOrigins: [
+    process.env.BETTER_AUTH_URL!,
+    process.env.NEXT_PUBLIC_BETTER_AUTH_URL!,
+  ],
   session: {
     cookieCache: {
       enabled: true,
