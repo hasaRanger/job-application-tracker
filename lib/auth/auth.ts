@@ -15,7 +15,7 @@ export const auth = betterAuth({
   }),
   trustedOrigins: [
     "http://localhost:3000",
-    "https://job-application-tracker-8jd8k44rp.vercel.app",
+    "https://job-application-tracker-chi-opal.vercel.app",
   ],
   session: {
     cookieCache: {

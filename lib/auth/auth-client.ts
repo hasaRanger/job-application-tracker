@@ -1,16 +1,28 @@
 import { createAuthClient } from "better-auth/react";
 
+let authClientInstance: ReturnType<typeof createAuthClient> | null = null;
+
 const getBaseURL = () => {
-  // In browser, use current domain
   if (typeof window !== "undefined") {
     return window.location.origin;
   }
-  // On server, use env variable
   return process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000";
 };
 
-export const authClient = createAuthClient({
-    baseURL: getBaseURL(),
-});
+const getAuthClient = () => {
+  if (!authClientInstance) {
+    authClientInstance = createAuthClient({
+      baseURL: getBaseURL(),
+    });
+  }
+  return authClientInstance;
+};
 
-export const { signIn, signUp, signOut, useSession } = authClient;
+export const authClient = new Proxy({}, {
+  get: (_, prop) => {
+    return getAuthClient()[prop as keyof ReturnType<typeof createAuthClient>];
+  },
+}) as ReturnType<typeof createAuthClient>;
+
+const client = getAuthClient();
+export const { signIn, signUp, signOut, useSession } = client;
