@@ -4,27 +4,40 @@ import connectDB from "@/lib/db";
 import { Board } from "@/lib/models";
 import { redirect } from "next/navigation";
 import KanbanBoard from "@/components/kanban-board";
+import { Suspense } from "react";
 
-export default async function Dashboard() {
-    const session = await getSession();
-
-    if(!session?.user) {
-        redirect("/sign-in");
-    }
+async function getBoard(userId: string) {
+    "use cache"
 
     await connectDB();
 
-    const board = await Board.findOne({
-        userId: session.user.id,
+    const boardDoc = await Board.findOne({
+        userId,
         name: "Job Hunt",
-    })
-    .populate({
+    }).populate({
         path: "columns",
         populate: {
             path: "jobApplications",
         },
-    })
-    .lean();
+    });
+
+    if(!boardDoc) {
+        return null;
+    }
+
+    const board = JSON.parse(JSON.stringify(boardDoc));
+
+    return board;
+
+}
+
+async function DashboardPage() {
+    const session = await getSession();
+    const board = await getBoard(session?.user.id ?? "");
+    if (!session?.user) {
+        redirect("/sign-in");
+    }
+
 
     console.log("Board data:", JSON.stringify(board, null, 2));
     console.log("Columns:", board?.columns);
@@ -56,11 +69,19 @@ export default async function Dashboard() {
                     <h1 className="text-3xl font-bold text-black">Job Hunt</h1>
                     <p className="text-gray-600">Track your job applications in one place.</p>
                 </div>
-                <KanbanBoard 
-                    board={JSON.parse(JSON.stringify(board))} 
-                    userId={session.user.id} 
+                <KanbanBoard
+                    board={board}
+                    userId={session.user.id}
                 />
             </div>
         </div>
+    );
+}
+
+export default async function Dashboard() {
+    return (
+        <Suspense fallback={<p className="text-center text-gray-500">Loading dashboard...</p>}>
+            <DashboardPage />
+        </Suspense>
     );
 }
